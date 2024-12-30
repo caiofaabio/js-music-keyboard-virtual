@@ -1,6 +1,7 @@
 const pianoKeys = document.querySelectorAll(".piano-keys .key");
 const volumeSlider = document.querySelector(".volume-slider input");
 const keysCheck = document.querySelector(".keys-check input");
+const themeToggle = document.getElementById("theme-toggle");
 
 let mapedKeys = [];
 let audio = new Audio("src/tunes/a.wav");
@@ -31,6 +32,10 @@ const handleVolume = (e) => {
   audio.volume = e.target.value;
 };
 
+themeToggle.addEventListener("change", () => {
+  document.body.classList.toggle("dark", themeToggle.checked);
+});
+
 const showHideKeys = () => {
   pianoKeys.forEach((key) => key.classList.toggle("hide"));
 };
@@ -38,3 +43,15 @@ const showHideKeys = () => {
 volumeSlider.addEventListener("input", handleVolume);
 
 keysCheck.addEventListener("click", showHideKeys);
+
+const savedTheme = localStorage.getItem("theme");
+if (savedTheme === "dark") {
+  document.body.classList.add("dark");
+  themeToggle.checked = true;
+}
+
+themeToggle.addEventListener("change", () => {
+  const isDark = themeToggle.checked;
+  document.body.classList.toggle("dark", isDark);
+  localStorage.setItem("theme", isDark ? "dark" : "light");
+});
